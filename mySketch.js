@@ -16,7 +16,7 @@ let centerX, centerY;
 let bg; // 背景文字图层
 
 function setup() {
-  createCanvas(windowWidth, windowHeight, WEBGL);
+  createCanvas(1080, 1080, WEBGL);
   frameRate(30);
   noStroke();
 
@@ -27,22 +27,23 @@ function setup() {
   centerY = height / 2;
 
   // -------- 创建黑底白字背景（做折射用） --------
-  rebuildBackground();
-  rebuildBalls();
+  bg = createGraphics(width, height);
+  bg.pixelDensity(1);
+  bg.background(0);
+
+  bg.fill(255);
+  bg.textAlign(LEFT, TOP);
+  bg.textSize(120);
+  bg.textLeading(110);
+  bg.text(
+    "DESIGN       *\nBY_BINU®\nMAKE A CITY\nMORE \nVIBRANT\n\nDESIGN       *\nBY_BINU®",
+    80, 80
+  );
 
   // 初始化多个大球
   for (let i = 0; i < NUM_BIG; i++) {
     bigBalls.push(new OscBall(true));
   }
-}
-function windowResized() {
-  resizeCanvas(windowWidth, windowHeight);
-
-  centerX = width / 2;
-  centerY = height / 2;
-
-  rebuildBackground();
-  rebuildBalls();
 }
 
 // ---------- 缓动 ----------
@@ -223,34 +224,4 @@ class OscBall {
 
     this.updatePos();
   }
-}
-function rebuildBackground() {
-  bg = createGraphics(width, height);
-  bg.pixelDensity(1);
-  bg.background(0);
-
-  bg.fill(255);
-  bg.textAlign(LEFT, TOP);
-
-  // 字号随屏幕比例缩放（关键）
-  let fontSize = min(width, height) * 0.11;
-  bg.textSize(fontSize);
-  bg.textLeading(fontSize * 0.9);
-
-  bg.text(
-    "DESIGN       *\nBY_BINU®\nMAKE A CITY\nMORE \nVIBRANT\n\nDESIGN       *\nBY_BINU®",
-    fontSize * 0.7,
-    fontSize * 0.7
-  );
-}
-function rebuildBalls() {
-  bigBalls = [];
-  smallBalls = [];
-
-  for (let i = 0; i < NUM_BIG; i++) {
-    bigBalls.push(new OscBall(true));
-  }
-
-  isBurst = false;
-  burstFrame = 0;
 }
